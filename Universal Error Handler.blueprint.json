@@ -1,0 +1,867 @@
+{
+    "name": "Universal Error Handler",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2294611,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -96,
+                    "y": 5
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Error webhook gateway"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 253,
+                    "y": 2
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 10,
+                            "module": "supabase:createARow",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 8830310
+                            },
+                            "filter": {
+                                "name": "Non Critical Errors",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{1.error_severity}}",
+                                            "b": "non_critical",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "table": "error_log",
+                                "error_type": "{{1.error_type}}",
+                                "module_name": "{{1.module_name}}",
+                                "error_detail": "{{1.error_detail}}",
+                                "execution_id": "{{1.execution_id}}",
+                                "item_payload": "{{1.item_payload}}",
+                                "error_message": "{{1.error_message}}",
+                                "scenario_name": "{{1.scenario_name}}",
+                                "error_severity": "{{1.error_severity}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 542,
+                                    "y": 180,
+                                    "name": "Log Non Critical Error"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "table": {
+                                            "mode": "chose",
+                                            "label": "error_log",
+                                            "nested": [
+                                                {
+                                                    "help": "Note:\nThis is a Primary Key.<pk/>",
+                                                    "name": "id",
+                                                    "type": "integer",
+                                                    "label": "id",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "Defaults to now(). ",
+                                                    "name": "created_at",
+                                                    "type": "text",
+                                                    "label": "created_at",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "scenario_name",
+                                                    "type": "text",
+                                                    "label": "scenario_name",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "module_name",
+                                                    "type": "text",
+                                                    "label": "module_name",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_message",
+                                                    "type": "text",
+                                                    "label": "error_message",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "item_payload",
+                                                    "type": "text",
+                                                    "label": "item_payload",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "execution_id",
+                                                    "type": "text",
+                                                    "label": "execution_id",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_type",
+                                                    "type": "text",
+                                                    "label": "error_type",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_severity",
+                                                    "type": "text",
+                                                    "label": "error_severity",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_detail",
+                                                    "type": "text",
+                                                    "label": "error_detail",
+                                                    "options": null,
+                                                    "required": false
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "supabase"
+                                            },
+                                            "label": "My Supabase connection"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:supabase",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "table",
+                                        "type": "select",
+                                        "label": "Table",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "id",
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "name": "created_at",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "scenario_name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "module_name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_message",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "item_payload",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_type",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_severity",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_detail",
+                                        "type": "text"
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "id",
+                                        "type": "number",
+                                        "label": "id"
+                                    },
+                                    {
+                                        "name": "created_at",
+                                        "type": "text",
+                                        "label": "created_at"
+                                    },
+                                    {
+                                        "name": "scenario_name",
+                                        "type": "text",
+                                        "label": "scenario_name"
+                                    },
+                                    {
+                                        "name": "module_name",
+                                        "type": "text",
+                                        "label": "module_name"
+                                    },
+                                    {
+                                        "name": "error_message",
+                                        "type": "text",
+                                        "label": "error_message"
+                                    },
+                                    {
+                                        "name": "item_payload",
+                                        "type": "text",
+                                        "label": "item_payload"
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "type": "text",
+                                        "label": "execution_id"
+                                    },
+                                    {
+                                        "name": "error_type",
+                                        "type": "text",
+                                        "label": "error_type"
+                                    },
+                                    {
+                                        "name": "error_severity",
+                                        "type": "text",
+                                        "label": "error_severity"
+                                    },
+                                    {
+                                        "name": "error_detail",
+                                        "type": "text",
+                                        "label": "error_detail"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 11,
+                            "module": "supabase:createARow",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 8830310
+                            },
+                            "filter": {
+                                "name": "Critical Errors",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{1.error_severity}}",
+                                            "b": "critical",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "table": "error_log",
+                                "error_type": "{{1.error_type}}",
+                                "module_name": "{{1.module_name}}",
+                                "error_detail": "{{1.`Error detail`}}",
+                                "execution_id": "{{1.execution_id}}",
+                                "item_payload": "{{1.item_payload}}",
+                                "error_message": "{{1.error_message}}",
+                                "scenario_name": "{{1.scenario_name}}",
+                                "error_severity": "{{1.error_severity}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 566,
+                                    "y": -137,
+                                    "name": "Log Critical Error"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "table": {
+                                            "mode": "chose",
+                                            "label": "error_log",
+                                            "nested": [
+                                                {
+                                                    "help": "Note:\nThis is a Primary Key.<pk/>",
+                                                    "name": "id",
+                                                    "type": "integer",
+                                                    "label": "id",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "Defaults to now(). ",
+                                                    "name": "created_at",
+                                                    "type": "text",
+                                                    "label": "created_at",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "scenario_name",
+                                                    "type": "text",
+                                                    "label": "scenario_name",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "module_name",
+                                                    "type": "text",
+                                                    "label": "module_name",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_message",
+                                                    "type": "text",
+                                                    "label": "error_message",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "item_payload",
+                                                    "type": "text",
+                                                    "label": "item_payload",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "execution_id",
+                                                    "type": "text",
+                                                    "label": "execution_id",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_type",
+                                                    "type": "text",
+                                                    "label": "error_type",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_severity",
+                                                    "type": "text",
+                                                    "label": "error_severity",
+                                                    "options": null,
+                                                    "required": false
+                                                },
+                                                {
+                                                    "help": "",
+                                                    "name": "error_detail",
+                                                    "type": "text",
+                                                    "label": "error_detail",
+                                                    "options": null,
+                                                    "required": false
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "supabase"
+                                            },
+                                            "label": "My Supabase connection"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:supabase",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "table",
+                                        "type": "select",
+                                        "label": "Table",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "id",
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "name": "created_at",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "scenario_name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "module_name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_message",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "item_payload",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_type",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_severity",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "error_detail",
+                                        "type": "text"
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "id",
+                                        "type": "number",
+                                        "label": "id"
+                                    },
+                                    {
+                                        "name": "created_at",
+                                        "type": "text",
+                                        "label": "created_at"
+                                    },
+                                    {
+                                        "name": "scenario_name",
+                                        "type": "text",
+                                        "label": "scenario_name"
+                                    },
+                                    {
+                                        "name": "module_name",
+                                        "type": "text",
+                                        "label": "module_name"
+                                    },
+                                    {
+                                        "name": "error_message",
+                                        "type": "text",
+                                        "label": "error_message"
+                                    },
+                                    {
+                                        "name": "item_payload",
+                                        "type": "text",
+                                        "label": "item_payload"
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "type": "text",
+                                        "label": "execution_id"
+                                    },
+                                    {
+                                        "name": "error_type",
+                                        "type": "text",
+                                        "label": "error_type"
+                                    },
+                                    {
+                                        "name": "error_severity",
+                                        "type": "text",
+                                        "label": "error_severity"
+                                    },
+                                    {
+                                        "name": "error_detail",
+                                        "type": "text",
+                                        "label": "error_detail"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 8,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 8867547
+                            },
+                            "mapper": {
+                                "to": [
+                                    "test.ckln@gmail.com"
+                                ],
+                                "subject": "Critical Error detected in your automation workflow ({{11.scenario_name}})",
+                                "bodyType": "collection",
+                                "contents": [
+                                    {
+                                        "text": "Severity: {{1.error_severity}}\nModule: {{1.module_name}}\nError Type: {{1.error_type}}\nError Message: {{1.error_message}}\nError Detail: {{ifempty(1.error_detail; \"' '\")}}\n\nFailed Payload:\n{{1.item_payload}}\n\nExecution ID: {{1.execution_id}}\nTimestamp: {{now}}",
+                                        "image": {}
+                                    }
+                                ]
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 925,
+                                    "y": -141,
+                                    "name": "Send Critical Error Alert"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Collection of contents (text, images, etc.)"
+                                        },
+                                        "contents": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "signature": {
+                                            "mode": "chose"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (test.ckln@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "to",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address",
+                                            "required": true,
+                                            "validate": true
+                                        },
+                                        "type": "array",
+                                        "label": "To",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "subject",
+                                        "type": "text",
+                                        "label": "Subject"
+                                    },
+                                    {
+                                        "name": "bodyType",
+                                        "type": "select",
+                                        "label": "Body type",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "rawHtml",
+                                                "collection"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "attachments",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "filename",
+                                                    "type": "filename",
+                                                    "label": "File name",
+                                                    "required": true,
+                                                    "semantic": "file:name"
+                                                },
+                                                {
+                                                    "name": "data",
+                                                    "type": "buffer",
+                                                    "label": "Data",
+                                                    "required": true,
+                                                    "semantic": "file:data"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Attachment"
+                                        },
+                                        "type": "array",
+                                        "label": "Attachments"
+                                    },
+                                    {
+                                        "name": "from",
+                                        "type": "select",
+                                        "label": "From"
+                                    },
+                                    {
+                                        "name": "cc",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address"
+                                        },
+                                        "type": "array",
+                                        "label": "CC recipients"
+                                    },
+                                    {
+                                        "name": "bcc",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address"
+                                        },
+                                        "type": "array",
+                                        "label": "BCC recipients"
+                                    },
+                                    {
+                                        "name": "emailHeaders",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "key",
+                                                    "type": "text",
+                                                    "label": "Key",
+                                                    "required": true
+                                                },
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Value"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Email header"
+                                        },
+                                        "type": "array",
+                                        "label": "Additional email headers"
+                                    },
+                                    {
+                                        "name": "contents",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "text",
+                                                    "type": "text",
+                                                    "label": "Text"
+                                                },
+                                                {
+                                                    "name": "image",
+                                                    "spec": [
+                                                        {
+                                                            "name": "filename",
+                                                            "type": "filename",
+                                                            "label": "File name",
+                                                            "semantic": "file:name"
+                                                        },
+                                                        {
+                                                            "name": "data",
+                                                            "type": "buffer",
+                                                            "label": "Data",
+                                                            "semantic": "file:data"
+                                                        },
+                                                        {
+                                                            "name": "width",
+                                                            "type": "uinteger",
+                                                            "label": "Width"
+                                                        },
+                                                        {
+                                                            "name": "height",
+                                                            "type": "uinteger",
+                                                            "label": "Height"
+                                                        }
+                                                    ],
+                                                    "type": "collection",
+                                                    "label": "Image"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Content"
+                                        },
+                                        "type": "array",
+                                        "label": "Body contents"
+                                    },
+                                    {
+                                        "name": "signature",
+                                        "type": "select",
+                                        "label": "Signature content"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "us2.make.com",
+        "notes": [
+            {
+                "moduleIds": [
+                    10
+                ],
+                "content": "<h3><strong>(SUPABASE) Log Non</strong>_<strong>Critical Error</strong></h3><h3>Creates new row in error_logs table.</h3><h3>Every error is a new record creates a new row</h3>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    8
+                ],
+                "content": "<h3><strong>[NOTIFY] Send Critical Error Alert</strong></h3><h3>Sends Gmail alert for critical errors only.</h3>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    11
+                ],
+                "content": "<h3><strong>(SUPABASE) Log Critical Error</strong></h3><h3>Creates new row in error_logs table.</h3><h3>Every error is a new record creates a new row</h3>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    3
+                ],
+                "content": "<h3><strong>(ROUTER) Error Severity Filter</strong></h3><h3>Routes errors based on <strong>error_severity field</strong>.</h3><h3>Path 1: <strong>critical</strong> — log to Supabase + send Gmail alert.</h3><h3>Path 2: <strong>non_critical</strong> — log to Supabase only, no notification.</h3>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    1
+                ],
+                "content": "<h3><strong>(TRIGGER) Error Router Webhook</strong></h3><h3>Receives error payload for all the scenarios</h3><h3> </h3>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            }
+        ]
+    }
+}
