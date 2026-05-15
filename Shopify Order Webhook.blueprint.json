@@ -676,7 +676,7 @@
                                 "fulfillment_status": "{{1.fulfillment_status}}"
                             },
                             "error_message": "{{2.error.message}}",
-                            "scenario_name": "Upsert into supabase",
+                            "scenario_name": "Shopify Order Webhook",
                             "error_severity": "critical"
                         },
                         "requestCompressedContent": true
@@ -1765,7 +1765,7 @@
                                 "fulfillment_status": "{{1.fulfillment_status}}"
                             },
                             "error_message": "{{13.error.message}}",
-                            "scenario_name": "Upsert into supabase",
+                            "scenario_name": "Shopify Order Webhook",
                             "error_severity": "critical"
                         },
                         "requestCompressedContent": true
@@ -2884,7 +2884,7 @@
                                 "fulfillment_status": "{{1.fulfillment_status}}"
                             },
                             "error_message": "{{15.error.message}}",
-                            "scenario_name": "Upsert into supabase",
+                            "scenario_name": "Shopify Order Webhook",
                             "error_severity": "non_critical"
                         },
                         "requestCompressedContent": true
